@@ -1,5 +1,3 @@
-#coding: utf-8
-
 """
 Python Wrapper for the Sears API (v1)
 
@@ -29,7 +27,8 @@ class SearsAPI:
         
         """
         
-        common = { 'apikey': self.apikey, 'store': self.store, 'contentType': 'json' }
+        common = { 'apikey': self.apikey, 'store': self.store, 
+            'contentType': 'json' }
         opts.update(common)
         
         return opts
@@ -41,7 +40,8 @@ class SearsAPI:
             info = urlopen(url)
     
             if info.getcode() != 200:
-                raise Exception("HTTP return code %i received for url %s." % (info.getcode(), url))
+                raise Exception("HTTP return code %i received for url %s." %
+                                (info.getcode(), url))
                 
             return info.read()
             
@@ -55,7 +55,8 @@ class SearsAPI:
         
         """
 
-        opts = urlencode(self._prepare_qs({'keyword': ','.join(keywords), 'searchType': 'keyword'}))
+        opts = urlencode(self._prepare_qs({'keyword': ','.join(keywords),
+                        'searchType': 'keyword'}))
         search_url = "%sproductsearch?%s" % (self.api_url, opts)
         
         data = self._read_url(search_url)
@@ -64,12 +65,14 @@ class SearsAPI:
         data_dict = json.loads(data)['mercadoresult']
         
         if int(data_dict['status']) != 0:
-            raise Exception("Error %s detected: %s" % (data_dict['status'], data_dict['errormessage']))
+            raise Exception("Error %s detected: %s" % 
+                            (data_dict['status'], data_dict['errormessage']))
             
         if int(data_dict['productcount']) == 0:
             return []
         else:
-            return [SimpleProduct(p) for p in data_dict['products']['product'][1]]
+            return [SimpleProduct(p) for p in                   
+                    data_dict['products']['product'][1]]
         
         
     def product_lookup(self, part_number):
@@ -84,7 +87,9 @@ class SearsAPI:
         data_dict = json.loads(data)['productdetail']
         
         if int(data_dict['statusdata']['responsecode']) != 0:
-            raise Exception("Error %s detected: %s" % (data_dict['statusdata']['responsecode'], data_dict['statusdata']['errormessage']))
+            raise Exception("Error %s detected: %s" %       
+                            (data_dict['statusdata']['responsecode'],       
+                            data_dict['statusdata']['errormessage']))
 
         return DetailedProduct(data_dict['softhardproductdetails'][1][0])
         
