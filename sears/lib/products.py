@@ -5,10 +5,19 @@ Comprises all product-related classes
 
 """
 
-class _BaseProduct:
+class _BaseProduct(object):
     """"""
     
     
+    def __init__(self):
+        self._supported_keys = []
+        self._stored_keys = []
+    
+        self._boolean_keys = []
+        self._float_keys = []
+        self._int_keys = []
+        self._special_keys = []
+        
     def __getattr__(self, name):
         if name not in self._stored_keys and name in self._supported_keys:
             return None
@@ -60,14 +69,7 @@ class SimpleProduct(_BaseProduct):
     
     
     def __init__(self, data):
-        self._supported_keys = []
-        self._stored_keys = []
-    
-        self._boolean_keys = []
-        self._float_keys = []
-        self._int_keys = []
-        self._special_keys = []
-        
+        super(SimpleProduct, self).__init__()
         
         self._supported_keys = [
             'automotivedivision', 'beantype', 'brandname', 'catentryid', 
@@ -96,14 +98,7 @@ class DetailedProduct(_BaseProduct):
     
     
     def __init__(self, data):
-        self._supported_keys = []
-        self._stored_keys = []
-    
-        self._boolean_keys = []
-        self._float_keys = []
-        self._int_keys = []
-        self._special_keys = []
-        
+        super(DetailedProduct, self).__init__()
         
         self._supported_keys = ['accessory', 'arrivalmethods', 
             'automotivedivision', 'brandname', 'catalogid', 'catentryid',
